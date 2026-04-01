@@ -27,10 +27,14 @@ class InteractionLogger:
         self.log_dir.mkdir(exist_ok=True)
         
         self.log_file = self.log_dir / "interaction_history.jsonl"
-        print(f"DEBUG: 日志绝对路径为 -> {self.log_file}")
+        # 仅在初始化时打印一次路径，减少干扰
+        print(f"{Color.DARKCYAN}[Logger] 日志路径: {self.log_file}{Color.END}")
 
-    def log(self, user_input, scene_context, plan, steps, status="success", error_msg=""):
-        """记录交互并实时打印到终端"""
+    def log(self, user_input, scene_context, status, steps, result_msg=""):
+        """
+        记录交互到文件。
+        注意：此处已彻底移除终端打印逻辑，所有打印由 controller.py 统一负责。
+        """
         timestamp = datetime.datetime.now().isoformat()
         
         # 构造结构化数据
@@ -38,54 +42,57 @@ class InteractionLogger:
             "timestamp": timestamp,
             "data": {
                 "user_input": user_input,
-                "scene_before": scene_context,
-                "ai_plan": plan,
+                "scene_context": scene_context, # 这里的 context 建议在 session_context 里过滤掉 volume 
                 "parsed_steps": steps,
                 "execution_status": status,
-                "error_message": error_msg,
-                "feedback": None  # 预留反馈字段
+                "result_message": result_msg,
+                "feedback": None
             }
         }
 
-        # 1. 写入文件 (JSONL)
-        with open(self.log_file, "a", encoding="utf-8") as f:
-            f.write(json.dumps(record, ensure_ascii=False) + "\n")
-            f.flush()  # ⭐ 强制将缓冲区内容写入硬盘
-            os.fsync(f.fileno()) # ⭐ 确保操作系统层面的写入
-
-        # 2. 漂亮地打印到终端 (终端调试神器)
-        self._print_to_terminal(timestamp, user_input, status, error_msg)
+        # 写入文件 (JSONL)
+        try:
+            with open(self.log_file, "a", encoding="utf-8") as f:
+                f.write(json.dumps(record, ensure_ascii=False) + "\n")
+                f.flush()
+                os.fsync(f.fileno())
+        except Exception as e:
+            # 只有文件写入失败这种严重错误才打印
+            print(f"{Color.RED}[Logger Error] 写入失败: {e}{Color.END}")
         
-        return timestamp # 返回时间戳作为这条记录的唯一标识，用于后续更新反馈
+        return timestamp
 
-    def _print_to_terminal(self, ts, user_input, status, error):
-        """格式化终端输出"""
-        color = Color.GREEN if status == "success" else Color.RED
-        print(f"\n{Color.BOLD}{Color.CYAN}--- Interaction Log [{ts}] ---{Color.END}")
-        print(f"{Color.BOLD}User Input:{Color.END} {user_input}")
-        print(f"{Color.BOLD}Status:{Color.END} {color}{status.upper()}{Color.END}")
-        if error:
-            print(f"{Color.BOLD}Error:{Color.END} {Color.YELLOW}{error}{Color.END}")
-        print(f"{Color.CYAN}--------------------------------------{Color.END}\n")
-
-    def update_feedback(self, timestamp, is_good):
+    def update_feedback_last_record(self, is_good):
         """
-        根据时间戳找到记录并更新用户反馈 (👍/👎)
-        这是 RLHF 数据准备的关键步骤
+        找到最后一条日志记录并更新其反馈状态
         """
-        temp_file = self.log_file.with_suffix('.tmp')
-        found = False
+        if not self.log_file.exists():
+            return
         
-        with open(self.log_file, 'r', encoding='utf-8') as f_in, \
-             open(temp_file, 'w', encoding='utf-8') as f_out:
-            for line in f_in:
-                data = json.loads(line)
-                if data['timestamp'] == timestamp:
-                    data['data']['feedback'] = "GOOD" if is_good else "BAD"
-                    found = True
-                f_out.write(json.dumps(data, ensure_ascii=False) + "\n")
-        
-        os.replace(temp_file, self.log_file)
-        if found:
-            status_text = f"{Color.GREEN}👍 GOOD{Color.END}" if is_good else f"{Color.RED}👎 BAD{Color.END}"
-            print(f"✅ 已更新反馈: {status_text} (ID: {timestamp})")
+        try:
+            with open(self.log_file, 'r', encoding='utf-8') as f:
+                lines = f.readlines()
+            
+            if not lines:
+                return
+            
+            # 解析最后一行
+            last_entry = json.loads(lines[-1])
+            
+            # 在 data 字典中添加或更新 feedback
+            if 'data' not in last_entry:
+                last_entry['data'] = {}
+            last_entry['data']['feedback'] = "GOOD" if is_good else "BAD"
+            
+            # 写回最后一行
+            lines[-1] = json.dumps(last_entry, ensure_ascii=False) + '\n'
+            
+            with open(self.log_file, 'w', encoding='utf-8') as f:
+                f.writelines(lines)
+            
+            # 这是一个非常有用的交互反馈，可以保留
+            feedback_icon = f"{Color.GREEN}👍{Color.END}" if is_good else f"{Color.RED}👎{Color.END}"
+            print(f"✅ 反馈已记录: {feedback_icon}")
+            
+        except Exception as e:
+            print(f"{Color.RED}❌ 更新反馈失败: {e}{Color.END}")
