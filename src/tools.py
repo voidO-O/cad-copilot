@@ -1,3 +1,4 @@
+# tools.py
 import math
 from abc import ABC, abstractmethod
 from OCC.Core.Quantity import Quantity_NOC_RED, Quantity_NOC_GREEN, Quantity_NOC_BLUE, Quantity_NOC_GRAY
@@ -109,7 +110,7 @@ class ScaleTool(BaseTool):
 
 # --- 4. 布尔运算工具 ---
 class BooleanTool(BaseTool):
-    # 🌟 终极修复：在初始化时就把算子类型焊死
+    # 在初始化时就把算子类型焊死
     def __init__(self, default_op="cut"):
         self.default_op = default_op
 
@@ -178,7 +179,6 @@ class ExportTool(BaseTool):
         if not visible_shapes:
             return "ERROR: No visible objects to export."
 
-        # 🌟 修复：直接使用传入的 filename，它已经是 llm_real 计算好的绝对路径
         # 不要再次使用 os.path.abspath，防止二次拼接错误
         final_path = str(filename)
         
@@ -230,7 +230,7 @@ def export_to_stl(shapes, filename):
         has_content = False
         for s in shapes:
             if s and not s.IsNull():
-                # 🌟 核心补丁：强制进行网格化 (BRepMesh) 🌟
+                # 强制进行网格化 (BRepMesh) 
                 # 参数 0.1 是网格精度，值越小越精细，但生成越慢
                 # 如果没有这一步，Writer 面对圆滑的球体可能会“一脸懵逼”地导出空文件
                 BRepMesh_IncrementalMesh(s, 0.1) 

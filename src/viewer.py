@@ -1,4 +1,4 @@
-# viewer.py 完整适配版
+# viewer.py
 from OCC.Display.OCCViewer import Viewer3d
 from OCC.Core.Quantity import Quantity_Color, Quantity_NOC_GRAY25, Quantity_NOC_GRAY
 from OCC.Core.AIS import AIS_Shaded
@@ -92,7 +92,7 @@ class CADViewer:
                 ais_shape = self.display.DisplayShape(obj.shape, update=False)[0]
                 self.ais_objects[name] = ais_shape
                 
-                # 3. 🌟 直接应用已经在 Controller 中转换好的颜色对象
+                # 3.直接应用已经在 Controller 中转换好的颜色对象
                 self.set_shape_color(name, obj.color)
         
         self.display.FitAll()
@@ -108,7 +108,7 @@ class CADViewer:
 
         ais_shape = self.ais_objects[name]
         
-        # 🌟 核心修复：检查类型。如果是字符串（手动调用时可能用到），转为枚举；
+        # 检查类型。如果是字符串（手动调用时可能用到），转为枚举；
         # 如果已经是枚举（Controller 传来的），直接使用。
         if isinstance(color_value, str):
             # 为了防止 tools 循环导入，这里做一个简单的本地映射或默认处理

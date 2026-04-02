@@ -51,7 +51,7 @@ class ObjectRegistry:
     def get_context_summary(self):
         if not self.objects: return "Scene is empty."
         lines = ["Current Scene Objects:"]
-        # 🌟 建议按 history 顺序遍历，确保 AI 看到的顺序一致
+        # 按 history 顺序遍历，确保 AI 看到的顺序一致
         for name in self.history:
             if name not in self.objects: continue
             obj = self.objects[name]

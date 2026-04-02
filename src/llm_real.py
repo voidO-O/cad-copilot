@@ -1,3 +1,4 @@
+# llm_real.py
 import json
 import re
 import uuid
@@ -136,7 +137,7 @@ boolean_fuse -> use {"shape1": "LAST_OBJ_1", "shape2": "LAST_OBJ_2"}
         final_steps = []
         is_reset_active = False
         
-        # --- 🌟 核心修复：占位符映射逻辑 🌟 ---
+        # 占位符映射逻辑 
         temp_id_map = {} # 存储 NEW_1 -> obj_xxxx 的映射
         creation_idx = 0 # 记录当前批次创建了多少个物体
 
@@ -201,7 +202,7 @@ boolean_fuse -> use {"shape1": "LAST_OBJ_1", "shape2": "LAST_OBJ_2"}
                             s["args"][arg_key] = temp_id_map[ref_id]
 
                 # 导出清洗
-                # --- 🌟 优化 4: 导出路径深度加固 (存放至与 src 同级的 exports 文件夹) 🌟 ---
+                # 导出路径深度加固 (存放至与 src 同级的 exports 文件夹) 
                 if tool == "export_stl":
                     # 1. 提取原始文件名 (多级检索)
                     # 尝试从 args 中取，如果取不到再从 s 根目录取，最后给默认值
@@ -228,10 +229,9 @@ boolean_fuse -> use {"shape1": "LAST_OBJ_1", "shape2": "LAST_OBJ_2"}
                             print(f"{Color.RED}创建目录失败: {e}，将使用当前目录{Color.END}")
                             export_dir = src_dir # 备选方案
 
-                    # 5. 组合最终绝对路径
                     full_path = os.path.normpath(os.path.join(export_dir, pure_name))
                     
-                    # 🌟 关键点：全字段覆盖，防止执行器读取旧的或错误的字段 🌟
+                    # 全字段覆盖，防止执行器读取旧的或错误的字段 
                     if "args" not in s:
                         s["args"] = {}
                     

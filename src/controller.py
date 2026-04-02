@@ -31,7 +31,7 @@ class CADController:
             for i, step in enumerate(steps):
                 tool_name = step.get("tool")
                 
-                # 🌟 【新增逻辑】：参数容错处理
+                # 参数容错处理
                 # 优先获取 args 字典，如果为空，则把除了 tool, name, args 以外的所有字段都塞进 args
                 args = step.get("args", {}).copy()
                 if not args:
@@ -59,8 +59,7 @@ class CADController:
                     if "boolean" in tool_name:
                         args['op_type'] = tool_name.split('_')[-1]
 
-                    # 🌟 执行工具逻辑
-                    # 注意：delete 工具也会在这里被调用
+                    # 执行工具逻辑
                     result = tool_instance.execute(self.registry, **args)
                     
                     # 3. 后续处理
@@ -94,7 +93,7 @@ class CADController:
     def _handle_visibility(self, args):
         target, action = args.get("shape"), args.get("action")
         
-        # 🌟 修复：增强的可见性逻辑，支持 show_only 和 all
+        # 增强的可见性逻辑，支持 show_only 和 all
         if action == "show_only":
             self.registry.visible_names.clear()
             if target != "all":
@@ -111,7 +110,6 @@ class CADController:
             if action == "hide" and target in self.registry.visible_names:
                 self.registry.visible_names.remove(target)
             elif action == "show":
-                # 🌟 修复：set 使用 .add() 而不是 .append()
                 self.registry.visible_names.add(target)
                 
         print(f" {Color.GREEN}可见性已更新: {target} -> {action}{Color.END}")

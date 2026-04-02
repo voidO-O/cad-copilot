@@ -1,4 +1,4 @@
-# cad_builder.py 完整代码
+# cad_builder.py 
 from OCC.Core.BRepPrimAPI import (
     BRepPrimAPI_MakeCylinder, 
     BRepPrimAPI_MakeSphere, 
@@ -50,8 +50,7 @@ def translate(shape, x=0, y=0, z=0):
     """
     return _apply_transform(shape, x, y, z, copy=True)
 
-# --- 🌟 核心修改：增加统一布尔运算接口 🌟 ---
-
+# 统一布尔运算接口
 def boolean_operation(shape1, shape2, op_type="cut"):
     """
     统一布尔运算接口，供 tools.py 调用
