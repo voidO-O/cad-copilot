@@ -157,6 +157,8 @@ For creating demo videos, try these scenarios:
 4. **Export** (15s)
    - "Export the model as bearing_housing.stl"
 
+![CAD Copilot Demo](demo.gif)
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details.
@@ -181,7 +183,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Project Link: [https://github.com/voidO-O/cad-copilot](https://github.com/voidO-O/cad-copilot)
 
-![CAD Copilot Demo](demo.gif)
+
 
 ---
 

@@ -157,6 +157,8 @@ OPENAI_MODEL=gpt-4o-mini
 4. **导出** (15秒)
    - "导出模型为 bearing_housing.stl"
 
+![CAD Copilot Demo](demo.gif)
+
 ## 🎥 录制建议
 
 - **工具**: OBS Studio / ScreenToGif
@@ -189,8 +191,7 @@ OPENAI_MODEL=gpt-4o-mini
 
 项目链接: [https://github.com/voidO-O/cad-copilot](https://github.com/voidO-O/cad-copilot)
 
-
-![CAD Copilot Demo](demo.gif)
+)
 
 ## ⚠️ 注意事项
 
