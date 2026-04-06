@@ -190,9 +190,9 @@ OPENAI_MODEL=gpt-4o-mini
 项目链接: [https://github.com/voidO-O/cad-copilot](https://github.com/voidO-O/cad-copilot)
 
 
-<video src="https://github.com/voidO-O/cad-copilot/blob/main/demo.mp4?raw=true" width="100%" controls>
-  您的浏览器不支持视频播放。
-</video>>
+<video src="demo.mp4" width="100%" controls>
+  您的浏览器不支持播放该视频。
+</video>
 
 ## ⚠️ 注意事项
 
