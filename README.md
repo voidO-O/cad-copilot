@@ -181,8 +181,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 Project Link: [https://github.com/voidO-O/cad-copilot](https://github.com/voidO-O/cad-copilot)
 
-<video src="https://github.com/voidO-O/cad-copilot/raw/refs/heads/main/demo.mp4" width="100%" controls>
-  你的浏览器不支持视频播放。
+<video src="https://github.com/voidO-O/cad-copilot/blob/main/demo.mp4?raw=true" width="100%" controls>
+  您的浏览器不支持视频播放。
 </video>
 
 ---
