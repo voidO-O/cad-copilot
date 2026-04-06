@@ -189,6 +189,11 @@ OPENAI_MODEL=gpt-4o-mini
 
 项目链接: [https://github.com/voidO-O/cad-copilot](https://github.com/voidO-O/cad-copilot)
 
+
+<video src="https://github.com/voidO-O/cad-copilot/raw/refs/heads/main/demo.mp4" width="100%" controls>
+  你的浏览器不支持视频播放。
+</video>
+
 ## ⚠️ 注意事项
 
 1. **API密钥安全**: 请勿将 `.env` 文件提交到Git仓库
