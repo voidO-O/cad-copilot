@@ -1,4 +1,4 @@
-# 🤖 Gemini CAD Copilot v2
+# 🤖CAD Copilot
 
 > AI-Powered 3D CAD Modeling Assistant - Create complex 3D models using natural language
 
