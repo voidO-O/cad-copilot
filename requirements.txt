@@ -1,0 +1,10 @@
+# Core Dependencies
+customtkinter>=5.0.0
+openai>=1.0.0
+
+# 3D CAD Engine (install via conda recommended: conda install -c conda-forge pythonocc-core)
+# pythonocc-core>=7.7.0
+
+# Semantic Matching (optional, for tool name translation)
+sentence-transformers>=2.2.0
+torch>=2.0.0
