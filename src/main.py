@@ -5,7 +5,7 @@ from session_context import ObjectRegistry
 from controller import CADController
 from viewer import get_viewer
 from logger_utils import InteractionLogger
-from llm_real import plan_with_ai
+from llm import plan_with_ai
 import threading
 from datetime import datetime
 import os

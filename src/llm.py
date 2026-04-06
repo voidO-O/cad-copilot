@@ -1,4 +1,4 @@
-# llm_real.py
+# llm.py
 import json
 import re
 import uuid
@@ -14,8 +14,8 @@ class Color:
 
 # 初始化客户端
 client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY"),
-    base_url=os.getenv("OPENAI_BASE_URL")
+    api_key="sk-qEQIeuwp652b984v43CbF438E01a403087119d4946Ce0aB8",
+    base_url="https://aihubmix.com/v1"
 )
 
 def plan_with_ai(user_input, context_info=""):
